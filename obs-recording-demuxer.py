@@ -154,7 +154,7 @@ def script_defaults(settings):
     obs.obs_data_set_default_int(settings, "wsport", 4444)
     obs.obs_data_set_default_string(settings, "wspass", password)
 
-    obs_channel = obs.obs_data_get_array(settings, "audio_channel_list")
+    obs_channel = obs.obs_data_get_array(settings, "channel_list")
     if obs.obs_data_array_count(obs_channel) <= 0:
         obs_array = obs.obs_data_array_create()
         item = obs.obs_data_create()
@@ -165,7 +165,7 @@ def script_defaults(settings):
         obs.obs_data_set_string(item, "value", "1|DefaultAudio")
         obs.obs_data_array_push_back(obs_array, item)
         obs.obs_data_release(item)
-        obs.obs_data_set_array(settings, "audio_channel_list", obs_array)
+        obs.obs_data_set_array(settings, "channel_list", obs_array)
         obs.obs_data_array_release(obs_array)
 
     obs.obs_data_array_release(obs_channel)
@@ -181,7 +181,7 @@ def script_update(settings):
     hostname = obs.obs_data_get_string(settings, "wshostname")
     port = obs.obs_data_get_int(settings, "wsport")
     password = obs.obs_data_get_string(settings, "wspass")
-    obs_channel = obs.obs_data_get_array(settings, "audio_channel_list")
+    obs_channel = obs.obs_data_get_array(settings, "channel_list")
     num_channel = obs.obs_data_array_count(obs_channel)
     channel_settings = []
     for i in range(num_channel):  # Convert C array to Python list
@@ -212,7 +212,7 @@ def script_properties():  # ui
     obs.obs_properties_add_text(props, "wshostname", "Websocket hostname", obs.OBS_TEXT_DEFAULT)
     obs.obs_properties_add_int(props, "wsport", "Websocket port", 1024, 65535, 1)
     obs.obs_properties_add_text(props, "wspass", "Websocket password", obs.OBS_TEXT_PASSWORD)
-    obs.obs_properties_add_editable_list(props, "audio_channel_list", "Audio channels",
+    obs.obs_properties_add_editable_list(props, "channel_list", "Channels to demux",
                                          obs.OBS_EDITABLE_LIST_TYPE_STRINGS, "", "")
     obs.obs_properties_add_bool(props, "enabled", "Enabled")
     obs.obs_properties_add_bool(props, "delete_source", "Delete source recording file")
