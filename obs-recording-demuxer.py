@@ -109,6 +109,12 @@ def generate_output_params():
         channels.append(channel)
         debug_print("channel is defined as", channel)
 
+    # Here we are going to output the metadata into an ini file so if we have metadata built in to the recording we keep that saved
+    # file format is documented here https://ffmpeg.org/ffmpeg-formats.html#Metadata-1
+    ffmpeg_mapped_args.append("-f")
+    ffmpeg_mapped_args.append("ffmetadata")
+    ffmpeg_mapped_args.append("ffmetadata.ini")
+
     # maybe we want to either use ffprobe to determine the file extension or allow the user to set it in the settings
     for channel in channels:
         ext = 'm4a'
@@ -117,6 +123,8 @@ def generate_output_params():
         ffmpeg_mapped_args.append("-map")
         ffmpeg_mapped_args.append(f"0:{channel['id']}")
         ffmpeg_mapped_args.append(f"{channel['name']}.{ext}")
+
+    debug_print("Final params is:", *ffmpeg_mapped_args)
 
 
 # OBS callbacks
