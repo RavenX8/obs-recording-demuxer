@@ -77,7 +77,7 @@ def wait_for_files(filepaths):
 class MyDemuxThread(threading.Thread):
     def run(self):
         global ffmpeg_mapped_args, recording_dir, recording_output, delete_source
-        local_recording_output_file_path = recording_output # Make a copy of the output so we can start recording right away
+        local_recording_output_file_path = recording_output  # Make a copy of the output so we can start recording right away
         path = local_recording_output_file_path + '_demux'
         os.makedirs(path)
         wait_for_files([local_recording_output_file_path])
@@ -87,7 +87,7 @@ class MyDemuxThread(threading.Thread):
                                  stdout=log_output, stderr=log_output, cwd=path)
         log_output.close()
         debug_print("subprocess returned with code", process.returncode)
-        if delete_source:
+        if delete_source and process.returncode == 0:
             debug_print("removing source file", local_recording_output_file_path)
             os.remove(local_recording_output_file_path)
         pass
